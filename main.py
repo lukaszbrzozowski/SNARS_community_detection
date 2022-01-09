@@ -2,7 +2,10 @@ import relegy.embeddings as rle
 import networkx as nx
 import numpy as np
 from avg_clustering import avg_clustering, get_values_for_gap_stat
+from read_data import read_datasets
 from gap_statistic.optimalK import OptimalK
+import time
+from tqdm import tqdm
 
 def util_clustering_function(X, k):
     clustering = avg_clustering(X, k)
@@ -37,6 +40,30 @@ def cluster(G: nx.Graph, k = None):
 
 
 if __name__ == '__main__':
-    G = nx.stochastic_block_model([50, 50, 50], [[0.9, 0.1, 0.1], [0.1, 0.9, 0.1], [0.1, 0.1, 0.9]])
-    cm = cluster(G)
-    print(cm)
+    graphs, Ks, filenames = read_datasets()
+    exec_times = []
+    results_path = "Lukasz_Brzozowski/"
+    for i, G in tqdm(enumerate(graphs)):
+        filename = filenames[i]
+        k = Ks[i]
+        if k is not None:
+            k = int(k)
+            start = time.time()
+            clustering = cluster(G, k)
+            finish = time.time()
+            exec_time = finish-start
+            exec_times.append(exec_time)
+        else:
+            start = time.time()
+            clustering = cluster(G)
+            finish = time.time()
+            exec_time=finish-start
+            exec_times.append(exec_time)
+        with open(results_path+filename, "w") as f:
+            for i, r in enumerate(clustering):
+                f.write(f"{i+1}, {clustering[i]} \n")
+    with open("Lukasz_Brzozowski/description.txt", "w") as f:
+        f.write("Lukasz Brzozowski\n")
+        f.write("https://github.com/lukaszbrzozowski/SNARS_community_detection\n")
+        for i in range(len(exec_times)):
+            f.write(filenames[i] + ", " + str(exec_times[i]) +"\n")

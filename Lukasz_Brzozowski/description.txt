@@ -1,0 +1,8 @@
+Łukasz Brzozowski
+https://github.com/lukaszbrzozowski/SNARS_community_detection
+D1-K=2.csv, 10.171526432037354
+D1-UNC.csv, 71.04778814315796
+D2-K=7.csv, 14.989040613174438
+D2-UNC.csv, 113.14627242088318
+D3-K=12.csv, 30.01984190940857
+D3-UNC.csv, 28.67981243133545
